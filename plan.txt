@@ -1,0 +1,62 @@
+Online-Dokon nomli proyekt, bunda mahsulotlarni bir martalik yoki kop martalik to'lov evaziga olish mumkin bo'ladi. Mahulotlarni 25% boshlang'ich to'lovni 
+amalga oshirgan 5(26%), 10(41%) yoki 15(52%) oy muddatga (+foizda) xarid qilish mumkin bo'lishi kerak. Loyiha Express JS freymworki orqali, 
+PostgreSQL ma'lumotlar bazasida toza SQL buyruqlari orqali qilinishi kerak. VaIfani bajarish uchun dastlab DRAW SQLda ma'lumotlar bazasining strukturasini 
+(Category, Products, Customers, Contracts, Payments,...) yaratib olish, so'ngra, barcha jadvallar uchun Crud yozish talab etiladi. 
+Shuningdek, bitta 'aqlli' qidiruvni amalga oshirish kerak. Xususan, joriy sanada to'lov muddati o'tib ketgan barcha xaridorlarni 
+(qaysi mahsulot, qaysi shartnoma bo'yicha, qancha to'lashi kerakligini ko'rsatgan holda) chiqarish kerak. 
+Misol:
+Komilov Sardor, iPhone 15, IMEI, 77(shartnoma raqami), 1320000so'm to'lashi kerak, 2kun o'tib ketgan!
+
+
+
+
+
+1. Ma'lumotlar Bazasi Dizayni (DRAW SQL)
+
+Loyihada quyidagi asosiy jadvallar kerak bo'ladi:
+
+    Categories: Mahsulot kategoriyalari haqida ma'lumot saqlanadi.
+        id: Birlamchi kalit.
+        name: Kategoriya nomi.
+
+    Products: Har bir mahsulot haqida ma'lumot saqlanadi.
+        id: Birlamchi kalit.
+        name: Mahsulot nomi.
+        category_id: Kategoriyaga bog'liq chet el kaliti (foreign key).
+        price: Mahsulotning umumiy narxi.
+
+    Customers: Xaridorlar haqida ma'lumot saqlanadi.
+        id: Birlamchi kalit.
+        name: Xaridor nomi.
+        phone: Xaridor telefon raqami.
+        email: Xaridor email manzili (ixtiyoriy).
+
+    Contracts: Shartnomalar haqida ma'lumot saqlanadi.
+        id: Birlamchi kalit.
+        product_id: Mahsulot bilan bog'liq chet el kaliti.
+        customer_id: Xaridor bilan bog'liq chet el kaliti.
+        initial_payment: Boshlang'ich to'lov miqdori.
+        installment_period: Muddat (5, 10, yoki 15 oy).
+        total_amount_due: Umumiy to'lanishi kerak bo'lgan summa.
+        created_at: Shartnoma tuzilgan sana.
+
+    Payments: To'lovlar haqida ma'lumot saqlanadi.
+        id: Birlamchi kalit.
+        contract_id: Shartnoma bilan bog'liq chet el kaliti.
+        payment_date: To'lov sanasi.
+        amount: To'langan summa.
+
+    Orders: Buyurtmalar haqida ma'lumot saqlanadi.
+        id: Birlamchi kalit.
+        customer_id: Xaridor bilan bog'liq chet el kaliti.
+        product_id: Mahsulot bilan bog'liq chet el kaliti.
+        quantity: Mahsulot soni.
+
+2. CRUD Operatsiyalari
+
+Har bir jadval uchun CRUD operatsiyalari yozish kerak bo'ladi:
+
+    Create: Jadvalga yangi yozuv qo'shish.
+    Read: Jadvallarni o'qish, aniq bir yozuvni yoki barcha yozuvlarni olish.
+    Update: Jadvallarda mavjud yozuvlarni yangilash.
+    Delete: Jadvaldan yozuvlarni o'chirish.
